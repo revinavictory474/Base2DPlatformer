@@ -1,0 +1,28 @@
+﻿using System.Collections;
+using UnityEngine;
+
+public class PlatformerPlayer : MonoBehaviour
+{
+    public float speed = 250.0f;
+    private Rigidbody2D _body;
+    private Animator _anim;
+
+    private void Start()
+    {
+        _body = GetComponent<Rigidbody2D>();
+        _anim = GetComponent<Animator>();
+    }
+
+    private void Update()
+    {
+        float deltaX = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
+        Vector2 movement = new Vector2(deltaX, _body.velocity.y);
+        _body.velocity = movement;
+
+        _anim.SetFloat("speed", Mathf.Abs(deltaX));
+        if (!Mathf.Approximately(deltaX, 0))
+        {
+            transform.localScale = new Vector3(Mathf.Sign(deltaX), 1, 1);
+        }
+    }
+}
